@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>求二次方程</title>
+</head>
+<body>
+	<script>
+		let a = parseFloat(prompt("输入二次项系数 a:"));
+		let b = parseFloat(prompt("输入二次项系数 b:"));
+		let c = parseFloat(prompt("输入二次项系数 c:"));
+	
+		if(isNaN(a)||isNaN(b)||isNaN(c))
+				{alert("请输入有效的数字");
+				console.log("请输入有效的数字");}
+			else{}
+				let delta = b*b - 4*a*c;
+	
+		if (delta >=0 && a>0)
+				{let x1=(-b + Math.sqrt(delta))/(2*a);
+				let x2=(-b - Math.sqrt(delta))/(2*a);
+				alert(`x1=${x1}\nx2=${x2}`);
+				console.log(`x1=${x1}\nx2=${x2}`);}
+			else{alert("错误");console.log("错误");}
+	</script>
+</body>
+</html>
