@@ -1,0 +1,13 @@
+var studentrecord={
+id:"D1003435",
+name:"John Smith",
+register:function(i,n)
+{
+  studentrecord.id=i;
+	studentrecord.name=n;
+}
+}
+studentrecord.register(1,"abc")
+studentrecord also can be viewed as a family name
+using family name is to promote software reusability
+by reducing the chance of name collision
