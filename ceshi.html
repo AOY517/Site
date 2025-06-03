@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>脚本功能测试页</title>
+    <style>
+        .test-area { margin: 20px; padding: 15px; border: 1px solid #ccc; }
+        .pass { color: green; }
+        .fail { color: red; }
+    </style>
+</head>
+<body>
+    <div class="test-area">
+        <h2>基础功能测试</h2>
+        <div id="visibility-test">可见性状态: 测试中...</div>
+        <div id="focus-test">焦点状态: 测试中...</div>
+    </div>
+    
+    <div class="test-area">
+        <h2>事件拦截测试</h2>
+        <button id="trigger-events">触发所有事件</button>
+        <div id="event-test">事件拦截: 测试中...</div>
+    </div>
+    
+    <div class="test-area">
+        <h2>高级功能测试</h2>
+        <div id="performance-test">性能API: 测试中...</div>
+        <div id="activity-test">活动模拟: 测试中...</div>
+    </div>
+
+    <script>
+        // 基础功能测试
+        const visTest = document.getElementById('visibility-test');
+        visTest.textContent = `可见性状态: ${document.visibilityState} (hidden: ${document.hidden})`;
+        visTest.className = document.hidden === false ? 'pass' : 'fail';
+        
+        const focusTest = document.getElementById('focus-test');
+        focusTest.textContent = `焦点状态: hasFocus: ${document.hasFocus()}, activeElement: ${document.activeElement.tagName}`;
+        focusTest.className = document.hasFocus() ? 'pass' : 'fail';
+        
+        // 事件拦截测试
+        document.getElementById('trigger-events').addEventListener('click', () => {
+            let eventsBlocked = true;
+            
+            const testHandler = () => { eventsBlocked = false; };
+            
+            document.addEventListener('visibilitychange', testHandler, true);
+            window.addEventListener('blur', testHandler, true);
+            
+            document.dispatchEvent(new Event('visibilitychange'));
+            window.dispatchEvent(new Event('blur'));
+            
+            setTimeout(() => {
+                document.getElementById('event-test').textContent = 
+                    `事件拦截: ${eventsBlocked ? '成功' : '失败'}`;
+                document.getElementById('event-test').className = 
+                    eventsBlocked ? 'pass' : 'fail';
+                    
+                document.removeEventListener('visibilitychange', testHandler, true);
+                window.removeEventListener('blur', testHandler, true);
+            }, 100);
+        });
+        
+        // 性能API测试
+        let lastTime = performance.now();
+        requestAnimationFrame((time) => {
+            const perfTest = document.getElementById('performance-test');
+            const timeDiff = time - lastTime;
+            perfTest.textContent = `性能API: RAF时间差: ${timeDiff.toFixed(2)}ms`;
+            perfTest.className = timeDiff > 0 && timeDiff < 50 ? 'pass' : 'fail';
+        });
+        
+        // 活动模拟测试
+        let lastMove = Date.now();
+        document.addEventListener('mousemove', () => {
+            const now = Date.now();
+            const activityTest = document.getElementById('activity-test');
+            activityTest.textContent = `活动模拟: 最后活动时间差: ${now - lastMove}ms`;
+            activityTest.className = now - lastMove > 0 ? 'pass' : 'fail';
+            lastMove = now;
+        });
+    </script>
+</body>
+</html>
